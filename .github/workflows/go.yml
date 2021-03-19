@@ -1,0 +1,46 @@
+name: Go
+on: [push]
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install libcap-dev
+      run: |
+        sudo apt-get update -qy
+        sudo apt-get install -qy libcap-dev
+
+    - name: Set up Go 1.13
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13
+      id: go
+    - name: Set GOPATH
+      # https://github.com/actions/setup-go/issues/12#issuecomment-524631719
+      run: |
+        echo "##[set-env name=GOPATH;]$(dirname $GITHUB_WORKSPACE)"
+        echo "##[add-path]$(dirname $GITHUB_WORKSPACE)/bin"
+      shell: bash
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v1
+
+    - name: Cache GOPATH/src/golang.org
+      uses: actions/cache@v1
+      with:
+        path: $GOPATH/src/golang.org
+        key: ${{ runner.os }}-GOPATH/src/golang.org
+
+    - name: Run make
+      run: make
+
+    - name: copy binary to known location
+      run: |
+        mkdir -p /tmp/artifacts
+        cp $GOPATH/bin/acmetool /tmp/artifacts/acmetool-${{ runner.os }}
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: acmetool
+        path: /tmp/artifacts/acmetool-${{ runner.os }}
