@@ -637,6 +637,7 @@ Do you want to continue? To enter a different webroot path, select No.`,
 			Implicit:     *batchFlag || r1.Noninteractive,
 			UniqueID:     "acmetool-quickstart-webroot-path-unlikely",
 		})
+		log.Fatale(err, "interaction")
 		if r != nil && r.Cancelled {
 			return promptWebrootDir()
 		}
