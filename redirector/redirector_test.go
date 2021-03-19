@@ -20,6 +20,7 @@ func TestRedirector(t *testing.T) {
 	r, err := New(Config{
 		Bind:          ":9847",
 		ChallengePath: dir,
+		StatusCode:    308,
 	})
 	if err != nil {
 		t.Fatal(err)
