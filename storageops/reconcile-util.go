@@ -98,6 +98,32 @@ func DoesCertificateSatisfy(c *storage.Certificate, t *storage.Target) bool {
 	return true
 }
 
+func FindBestCertificateSatisfyingFromCache(certArray []*storage.Certificate, t *storage.Target) (*storage.Certificate, error) {
+	var bestCert *storage.Certificate
+
+	for _, c := range certArray {
+		if DoesCertificateSatisfy(c, t) {
+			isBetterThan, err := CertificateBetterThan(c, bestCert)
+			if err != nil {
+				continue
+			}
+
+			if isBetterThan {
+				log.Tracef("findBestCertificateSatisfying: %v > %v", c, bestCert)
+				bestCert = c
+			} else {
+				log.Tracef("findBestCertificateSatisfying: %v <= %v", c, bestCert)
+			}
+		}
+	}
+
+	if bestCert == nil {
+		return nil, fmt.Errorf("%v: no certificate satisfies this target", t)
+	}
+
+	return bestCert, nil
+}
+
 func FindBestCertificateSatisfying(s storage.Store, t *storage.Target) (*storage.Certificate, error) {
 	var bestCert *storage.Certificate
 

@@ -33,6 +33,8 @@ var InternalClock = clock.Default()
 // Internal use only. Used for testing purposes. Do not change.
 var InternalHTTPClient *http.Client
 
+var reconcileMap = make(map[string][]*storage.Certificate)
+
 // Optional configuration for the Reconcile operation.
 type ReconcileConfig struct {
 	// If non-empty, a set of target names/paths to limit reconciliation to.
@@ -138,9 +140,10 @@ func (r *reconcile) Relink() error {
 	}
 
 	var updatedHostnames []string
+	r.ensureMap()
 
 	for name, tgt := range hostnameTargetMapping {
-		c, err := FindBestCertificateSatisfying(r.store, tgt)
+		c, err := FindBestCertificateSatisfyingFromCache(reconcileMap[tgt.Satisfy.Names[0]], tgt)
 		if err != nil {
 			log.Debugf("could not find certificate satisfying %v: %v", tgt, err)
 			continue
@@ -398,16 +401,33 @@ func (r *reconcile) targetIsSelected(t *storage.Target) (selected bool, err erro
 	return
 }
 
+func (r *reconcile) ensureMap() error {
+	r.store.VisitCertificates(func(c *storage.Certificate) error {
+		cc, err := x509.ParseCertificate(c.Certificates[0])
+		if err != nil {
+			log.Debugf("%v cannot parse: %v", c, err)
+			return err
+		}
+
+		for _, name := range cc.DNSNames {
+			reconcileMap[name] = append(reconcileMap[name], c)
+		}
+		return nil
+	})
+	return nil
+}
+
 func (r *reconcile) processTargets() error {
 	var merr util.MultiError
+
+	r.ensureMap()
 
 	r.store.VisitTargets(func(t *storage.Target) error {
 		selected, err := r.targetIsSelected(t)
 		if err != nil || !selected {
 			return err
 		}
-
-		c, err := FindBestCertificateSatisfying(r.store, t)
+		c, err := FindBestCertificateSatisfyingFromCache(reconcileMap[t.Satisfy.Names[0]], t)
 		log.Debugf("%v: best certificate satisfying is %v, err=%v", t, c, err)
 		if err == nil && !CertificateNeedsRenewing(c, t) {
 			log.Debugf("%v: have best certificate which does not need renewing, skipping target", t)
@@ -703,6 +723,17 @@ func (r *reconcile) downloadCertificateAdaptive(c *storage.Certificate) error {
 	if err != nil {
 		log.Errore(err, "failed to save certificate after retrieval", c)
 		return err
+	}
+
+	// Add it to the reconcile map
+	cc, err := x509.ParseCertificate(c.Certificates[0])
+	if err != nil {
+		log.Debugf("%v cannot parse: %v", c, err)
+		return err
+	}
+
+	for _, name := range cc.DNSNames {
+		reconcileMap[name] = append(reconcileMap[name], c)
 	}
 
 	return nil
