@@ -50,7 +50,7 @@ const manPageTemplate = `{{define "FormatFlags"}}\
 .SH "AUTHOR"
 © 2015 {{.App.Author}} <hlandau@devever.net>  MIT License
 .SH "SEE ALSO"
-Documentation: <https://github.com/hlandau/acme>
+Documentation: <https://github.com/hlandau/acmetool>
 
 Report bugs at: <https://github.com/hlandau/acmetool/issues>
 `

@@ -29,7 +29,7 @@ ARCHS="386_cgo amd64_cgo 386 amd64 arm arm64 ppc64 ppc64le"
 
 mkdir -p "$ARCHIVEDIR"
 for ARCH in $ARCHS; do
-  wget -nc -O "$ARCHIVEDIR/acmetool-v$VERSION-linux_$ARCH.tar.gz" "https://github.com/hlandau/acme/releases/download/v$VERSION/acmetool-v$VERSION-linux_$ARCH.tar.gz"
+  wget -nc -O "$ARCHIVEDIR/acmetool-v$VERSION-linux_$ARCH.tar.gz" "https://github.com/hlandau/acmetool/releases/download/v$VERSION/acmetool-v$VERSION-linux_$ARCH.tar.gz"
 done
 
 mkdir -p "$OUTDIR/acmetool_$VERSION"
@@ -58,7 +58,7 @@ cat <<END > "$DEBIANDIR/changelog"
 acmetool ($VERSION-$REVISION) $DISTRO; urgency=medium
 
   * Changelog information not maintained in Debian packaging.
-    See <https://github.com/hlandau/acme/releases>
+    See <https://github.com/hlandau/acmetool/releases>
 
  -- Hugo Landau <hlandau@devever.net>  $DATE_R
 END
@@ -99,7 +99,7 @@ cat <<'END' > "$DEBIANDIR/copyright"
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: acmetool
 Upstream-Contact: Hugo Landau <hlandau@devever.net>
-Source: https://github.com/hlandau/acme
+Source: https://github.com/hlandau/acmetool
 
 Files: *
 Copyright: 2015, Hugo Landau <hlandau@devever.net>

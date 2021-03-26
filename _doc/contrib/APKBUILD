@@ -9,7 +9,7 @@
 #
 if [ "$(find version -mmin -30 2>/dev/null | wc -l)" == "0" ]; then
   curl -s -H 'Accept: application/vnd.github.v3+json' \
-  'https://api.github.com/repos/hlandau/acme/releases/latest' | \
+  'https://api.github.com/repos/hlandau/acmetool/releases/latest' | \
   sed 's/^.*"tag_name": *"v\([^"]*\)".*$/\1/;tx;d;:x' > version.tmp || exit 1
   mv version.tmp version
 fi
@@ -18,7 +18,7 @@ pkgname=acmetool
 pkgver="$(cat version)"
 pkgrel=0
 pkgdesc="ACME/Let's Encrypt client"
-url="https://github.com/hlandau/acme"
+url="https://github.com/hlandau/acmetool"
 arch="all"
 license="MIT"
 depends="libcap"
@@ -30,21 +30,21 @@ source=""
 
 prepare() {
   cd "$srcdir"
-  git clone -b "v$pkgver" https://github.com/hlandau/acme || return 1
+  git clone -b "v$pkgver" https://github.com/hlandau/acmetool || return 1
 }
 
 build() {
-  cd "$srcdir/acme" || return 1
+  cd "$srcdir/acmetool" || return 1
   make USE_BUILDINFO=1 || return 1
 
   # For some reason this is necessary in order for the buildinfo to get
   # included properly.
-  rm "$srcdir/acme/bin/$pkgname" || return 1
+  rm "$srcdir/acmetool/bin/$pkgname" || return 1
   make USE_BUILDINFO=1 || return 1
 }
 
 package() {
-  install -Dm0755 "$srcdir/acme/bin/$pkgname" "$pkgdir"/usr/bin/$pkgname || return 1
+  install -Dm0755 "$srcdir/acmetool/bin/$pkgname" "$pkgdir"/usr/bin/$pkgname || return 1
 	mkdir -p "$pkgdir"/usr/share/man/man8
 	"$pkgdir"/usr/bin/$pkgname --help-man | gzip > \
 		"$pkgdir"/usr/share/man/man8/acmetool.man.gz || return 1

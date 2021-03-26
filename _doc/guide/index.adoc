@@ -28,7 +28,7 @@ state and be transparent in the state that it does use. All state,
 including certificates, is stored in a single directory, by default
 `/var/lib/acme`. The schema for this directory is simple, comprehensible
 and
-https://github.com/hlandau/acme/blob/master/_doc/SCHEMA.md[documented.]
+https://github.com/hlandau/acmetool/blob/master/_doc/SCHEMA.md[documented.]
 
 *Stable filenames.* The certificate for a given hostname `example.com`
 always lives at `/var/lib/acme/live/example.com/{cert,chain,privkey}`.
@@ -80,7 +80,7 @@ You can install acmetool by building from source or by using a binary
 release. Both are easy.
 
 *Installing: using binary releases.*
-https://github.com/hlandau/acme/releases[Binary releases are found
+https://github.com/hlandau/acmetool/releases[Binary releases are found
 here.] Unpack, copy the binary to `/usr/local/bin/acmetool` (or wherever
 you like), and you’re done.
 
@@ -156,7 +156,7 @@ $ sudo pacman -U ./acmetool*.pkg.tar.xz
 ----
 
 *Installing: Alpine Linux users.*
-https://github.com/hlandau/acme/blob/master/_doc/APKBUILD[An APKBUILD
+https://github.com/hlandau/acmetool/blob/master/_doc/contrib/APKBUILD[An APKBUILD
 for building from source is available.]
 
 *Installing: from source.* Clone, make, make install. You will need Go
@@ -172,8 +172,8 @@ called `libcap-dev` or `libcap-devel` or similar.
 # which hasn't yet been accounted for in some places.
 $ git config --global http.followRedirects true
 
-$ git clone https://github.com/hlandau/acme
-$ cd acme
+$ git clone https://github.com/hlandau/acmetool
+$ cd acmetool
 $ make && sudo make install
 ----
 
@@ -273,7 +273,7 @@ executes any executable files in `/usr/lib/acme/hooks` (or
 `/usr/libexec/acme/hooks` if on a distro that uses libexec). You can
 drop your own executable files here, and acmetool will invoke them when
 it changes certificates. (For information on the calling convention, see
-https://github.com/hlandau/acme/blob/master/_doc/SCHEMA.md#notification-hooks[SCHEMA.md].)
+https://github.com/hlandau/acmetool/blob/master/_doc/SCHEMA.md#notification-hooks[SCHEMA.md].)
 
 `acmetool quickstart` installs some default hooks applicable to common
 webservers. These hooks contain the string `#!acmetool-managed!#`.
@@ -353,7 +353,7 @@ $ sudo acmetool
 Target files live in the `desired` directory. An empty target file
 defaults to its filename as the target hostname.
 
-https://github.com/hlandau/acme/blob/master/_doc/SCHEMA.md[More
+https://github.com/hlandau/acmetool/blob/master/_doc/SCHEMA.md[More
 information on the format of the acmetool state directory and target
 files.]
 
@@ -521,7 +521,7 @@ retrievable only from the internet but not the local machine.)
 [[the-state-storage-schema]]
 == The state storage schema
 
-https://github.com/hlandau/acme/blob/master/_doc/SCHEMA.md[The format of
+https://github.com/hlandau/acmetool/blob/master/_doc/SCHEMA.md[The format of
 acmetool’s state directory is authoritatively documented here.] What
 follows is a summary of the more important parts.
 
@@ -611,7 +611,7 @@ acmetool can ask.
 
 To do this, you provide the `--response-file` flag, with the path to a
 YAML file containing response information.
-https://github.com/hlandau/acme/blob/master/_doc/response-file.yaml[An
+https://github.com/hlandau/acmetool/blob/master/_doc/contrib/response-file.yaml[An
 example of such a file is here.]
 
 If you don’t provide a `--response-file` flag, acmetool will try to look
@@ -670,11 +670,11 @@ Challenge hooks are executed when challenge files need to be added or
 removed. Your hook must be synchronous; it must exit only when the
 challenge file is definitely in place and is globally accessible.
 
-https://github.com/hlandau/acme/blob/master/_doc/SCHEMA.md#hooks[See the
+https://github.com/hlandau/acmetool/blob/master/_doc/SCHEMA.md#hooks[See the
 specification for more information.]
 
 Challenge hooks are supported for HTTP, TLS-SNI and DNS challenges.
-https://hlandau.github.io/acme/userguide#annex-external-resources-and-third-party-extentions[A
+https://hlandau.github.io/acmetool/userguide#annex-external-resources-and-third-party-extentions[A
 list of third party challenge hook scripts can be found here.]
 
 [[command-line-options]]
@@ -704,7 +704,7 @@ tried in addition to any webroot you specify, as will proxy and listener
 mode ports.
 
 Fore more information, see
-https://hlandau.github.io/acme/userguide#challenge-completion-philosophy[challenge
+https://hlandau.github.io/acmetool/userguide#challenge-completion-philosophy[challenge
 completion philosophy].
 
 [[annex-root-configured-non-root-operation]]
@@ -824,7 +824,7 @@ other than development anyway.
 
 The list of various tutorials, hook scripts and other integrations
 people have made for acmetool is now maintained
-https://github.com/hlandau/acme/wiki/ThirdPartyResources[in the wiki].
+https://github.com/hlandau/acmetool/wiki/ThirdPartyResources[in the wiki].
 
-* *https://github.com/hlandau/acme/wiki/ThirdPartyResources[List of
+* *https://github.com/hlandau/acmetool/wiki/ThirdPartyResources[List of
 third party resources]*

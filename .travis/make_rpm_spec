@@ -23,7 +23,7 @@ Version: $VERSION
 Release: 1%{?dist}
 Summary: Automatic certificate acquisition tool
 License: MIT
-URL: https://github.com/hlandau/acme
+URL: https://github.com/hlandau/acmetool
 Group: Applications/System
 Requires: libcap
 Conflicts: %{aname}$NOTNOCGO_SUFFIX

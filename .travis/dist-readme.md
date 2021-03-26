@@ -1,6 +1,6 @@
 # ACME Client Utilities
 
-More information: <https://github.com/hlandau/acme>
+More information: <https://github.com/hlandau/acmetool>
 
 ## Installation and Usage
 
@@ -19,10 +19,10 @@ installation instructions:
   $ ls /var/lib/acme/live/example.com/
 
 For more information on using acmetool, please see the full README at
-  https://github.com/hlandau/acme
+  https://github.com/hlandau/acmetool
 
 ## Licence
 
     © 2015 Hugo Landau <hlandau@devever.net>    MIT License
 
-File issues at <https://github.com/hlandau/acme/issues>.
+File issues at <https://github.com/hlandau/acmetool/issues>.
